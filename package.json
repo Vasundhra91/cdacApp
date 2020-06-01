@@ -5,8 +5,11 @@
   "scripts": {
     "start": "set PORT=3001 && node bin/www && node app.js",
     "server": "set PORT=3001 && nodemon bin/www && nodemon app.js",
+    "Dashboard-install": "npm install --prefix Dashboard",
     "Dashboard": "npm start --prefix Dashboard",
-    "dev": "concurrently  \"npm run server\" \"npm run Dashboard\""
+    "dev": "concurrently  \"npm run server\" \"npm run Dashboard\"",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix Dashboard && npm run build --prefix Dashboard"
+  
   },
   "dependencies": {
     "body-parser": "^1.19.0",

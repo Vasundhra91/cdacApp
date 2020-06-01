@@ -35,7 +35,7 @@ app.use(function(err, req, res, next) {
 });
 controller(app)
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('dashboard/build'));
+  app.use(express.static('Dashboard/build'));
   app.get('*', function (req, res) {
     res.sendFile(path.resolve(__dirname, 'Dashboard', 'build','index.html'));
    
