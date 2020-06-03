@@ -18,12 +18,7 @@ var controller = require('./Controller/todoController.js')
 app.use('/users', usersRouter);
 app.use('/uploadfile', uploadfileRouter);
 app.use('/uploaduserphoto', uploadfilePhotoRouter);
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
 
-// error handler
 
 app.use(express.static(__dirname+'/ConfigFile'));
 controller(app)
