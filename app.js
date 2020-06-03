@@ -41,4 +41,5 @@ if (process.env.NODE_ENV === 'production') {
    
   });
 }
+app.listen(3001);
 module.exports = app;
