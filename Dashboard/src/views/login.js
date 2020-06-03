@@ -65,6 +65,8 @@ export default function SignIn() {
     {
     if(Userdetails.Userdetails!="1")
     dispatch({type:'login',user:Userdetails})
+    setstatus("")
+    setmsg("")
     }
     if(Userdetails.Userdetails=="1")
     {
