@@ -304,7 +304,7 @@ setmsg("alert alert-success")
                 onChange={e => setAdmin(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={8}>
             <input type="file"
              onChange={onFileChange} 
              />
