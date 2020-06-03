@@ -10,7 +10,9 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import './Custom.css';
 //import AdminLayout from "layouts/Admin.jsx";
 import Home from "views/login";
+import * as serviceWorker from './serviceWorker';
 //const hist = createBrowserHistory();
 
 ReactDOM.render(<UserContextProvider><Home/></UserContextProvider>,document.getElementById("root")
 );
+serviceWorker.unregister();
