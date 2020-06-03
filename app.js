@@ -18,17 +18,11 @@ var controller = require('./Controller/todoController.js')
 app.use('/users', usersRouter);
 app.use('/uploadfile', uploadfileRouter);
 app.use('/uploaduserphoto', uploadfilePhotoRouter);
-
-
-app.use(express.static(__dirname+'/ConfigFile'));
 controller(app)
+
 if (process.env.NODE_ENV === 'production') {
-  console.log("object+"+ express.static('Dashboard/build'))
   app.use(express.static('Dashboard/build'));
-  console.log("sssssssaaaaaaaaa"+path.resolve(__dirname, 'Dashboard', 'build','index.html'))
-  
   app.get('*', function (req, res) {
-    console.log("ssssssssssss"+path.resolve(__dirname, 'Dashboard', 'build','index.html'))
     res.sendFile(path.resolve(__dirname, 'Dashboard', 'build','index.html'));
    
   });
