@@ -61,7 +61,7 @@ router.post('/userinfo_byid', function (req, res) {
     if (Count.length >= 1) {
       UserTestResultModel.findOne(query, function (error, data) {
         if (error) { throw error }
-        console.log(data)
+        
         if(data!== null){
         if (data.Result === "PASS") {
           UserCourse.findOne({ _id: req.body.UserCourseID }, function (error, datavalue) {
@@ -71,7 +71,6 @@ router.post('/userinfo_byid', function (req, res) {
         }
       }
       else {
-        console.log("status: q")
         res.json({ Usercourse: "null" });
       }
       })
@@ -101,8 +100,7 @@ router.post('/login', function (req, res) {
       res.send("1");
     }
     else {
-      console.log(user)
-
+     
       res.json(user);
       // res.send(JSON.stringify(user.Fname + " " + user.LName+"-"+user._id+"-"+user.UserAdmin))
     }
@@ -123,7 +121,7 @@ router.post('/Admin', function (req, res) {
   
 });
 router.post('/UserTestResult', function (req, res) {
-  console.log(req.body)
+ 
 
   UserTestResultModel.create(req.body).then(function (error, data) {
     try {
@@ -162,7 +160,7 @@ router.post('/UserTestPaper', function (req, res) {
       var query = { User_id: req.body.Userid, Result: "PASS" }
 
       UserTestResultModel.findOne(query, function (err, testdata) {
-        console.log(testdata)
+       
         if (testdata != null) {
           testResult = testResult.filter(x => {
             return x.Ques_id != testdata.Ques_id;
@@ -186,7 +184,7 @@ router.post('/AdminTestPaper', function (req, res) {
       { $sort: { _id: 1 } }
     ]).exec(function (error, data) {
       if (error) { throw error }
-      console.log(data=="")
+      
 if(data!=""){
       let testResult = []
 
@@ -200,10 +198,8 @@ if(data!=""){
           testResult.push(item)
         }
       }
-      console.log(testResult)
       res.json(testResult);
     }else{
-      console.log(0)
       res.send("0");}
     });
     
@@ -224,14 +220,14 @@ router.delete('/deletecourse/:id', (req, res) => {
 })
 
 router.delete('/deletetest_paper/:id', (req, res) => {
-  console.log(req.params.id)
+  
   SubmitModel.deleteMany({ Ques_id: { $in: req.params.id } }, (err, data) => {
     if (err) res.status(404).json({ err: err });
     SubmitModel.aggregate([{ $sort: { _id: 1 } }
     ]).exec(function (error, data) {
       if (error) { throw error }
       let testResult = []
-      console.log(data)
+      
       var uniqueNames = [];
       for (i = 0; i < data.length; i++) {
         let item = {}
@@ -242,7 +238,7 @@ router.delete('/deletetest_paper/:id', (req, res) => {
           testResult.push(item)
         }
       }
-      console.log(testResult)
+      
       res.json(testResult);
     });
   });
