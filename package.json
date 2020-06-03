@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "set PORT=3001 && node bin/www && node app.js",
-    "server": "nodemon app.js",
+    "server": "set PORT=3001 && nodemon bin/www && nodemon app.js",
     "Dashboard-install": "npm install --prefix Dashboard",
     "Dashboard": "npm start --prefix Dashboard",
     "dev": "concurrently  \"npm run server\" \"npm run Dashboard\"",
