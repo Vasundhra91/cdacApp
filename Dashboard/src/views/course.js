@@ -6,6 +6,7 @@ import Container from '@material-ui/core/Container';
 import axios from "axios";
 export default function AddCourse() {
     const [data, setData] = useState([]);
+    const [check, setcheck] = useState([]);
     const useStyles = makeStyles(theme => ({
         paper: {
             marginTop: theme.spacing(8),
@@ -45,7 +46,7 @@ export default function AddCourse() {
                 'Content-Type': 'application/json'
             }
         }).then(res => res.json())
-        .then(result => setData(result.data))
+        .then(result => setcheck(result))
         .catch(error => console.error('Error:', error));
     }
     useEffect(() => {
@@ -53,11 +54,11 @@ export default function AddCourse() {
             .get("/users/coursedetails")
             .then(result => setData(result.data))
     }, [data]);
-
     return (
         <div><div style={{ paddingTop: "52px" }}>
             <Container component="main" maxWidth="xs" style={{ background: "#cce6ff" }}>
                 <h2> Add Users Course</h2>
+               <div style={{color:"red" }}>{check===1?"Course Already Exist ":check===2?"Data Saved successfully":""} </div> 
                 <form onSubmit={handleSubmit} className={classes.form} noValidate>
                     <TextField
                         variant="outlined"

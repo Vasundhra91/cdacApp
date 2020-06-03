@@ -32,6 +32,7 @@ router.post('/check', function (req, res) {
   })
 })
 
+
 router.post('/', function (req, res) {
   var query = { Useremail: req.body.Useremail };
   LoginModel.findOne(query, function (error, datavalue) {
@@ -238,16 +239,21 @@ router.delete('/deletetest_paper/:id', (req, res) => {
 router.post('/addcourse', function (req, res) {
   try
   {
-  UserCourse.create(req.body).then(function (error, data) {
-    if (error) { throw error }
-      UserCourse.find({}, function (error, datavalue) {
-        if (error) { throw error }
-        console.log(datavalue)
-        res.json(datavalue);
-      })
-      // console.log(res.status(200).send(JSON.stringify({ status : "Data Save Successfully" }, null, 3)))
-      // res.status(200).send(JSON.stringify({ status : "Data Save Successfully" }, null, 3));
-  })
+    var query = { Usercourse: req.body.Usercourse };
+    UserCourse.findOne(query, function (error, datavalue) {
+      if (error) { throw error }
+      if (datavalue === null) {
+        UserCourse.create(req.body).then(function (data) {
+          {
+            res.send("2");
+          }
+        })
+      } else {
+        console.log("Already Exit")
+        res.send("1");
+      }
+    })
+  
 } catch{
   res.status(500).send(JSON.stringify({ status: "Server Error" }, null, 3));
 }
