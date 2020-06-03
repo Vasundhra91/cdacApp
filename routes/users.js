@@ -211,6 +211,18 @@ if(data!=""){
     catch(error){}
 });
 
+router.delete('/deletecourse/:id', (req, res) => {
+  UserCourse.deleteMany({ _id: { $in: req.params.id } }, (err, data) => {
+    if (err) res.status(404).json({ err: err });
+    {
+      UserCourse.find(function (error, alldata) {
+        if (error) { throw error }
+        res.send(alldata);
+      })
+    }
+  })
+})
+
 router.delete('/deletetest_paper/:id', (req, res) => {
   console.log(req.params.id)
   SubmitModel.deleteMany({ Ques_id: { $in: req.params.id } }, (err, data) => {
@@ -245,12 +257,15 @@ router.post('/addcourse', function (req, res) {
       if (datavalue === null) {
         UserCourse.create(req.body).then(function (data) {
           {
-            res.send("2");
+            UserCourse.find(function (error, alldata) {
+              if (error) { throw error }
+              res.send(alldata);
+            })
           }
         })
       } else {
         console.log("Already Exit")
-        res.send("1");
+        //res.send("1");
       }
     })
   
