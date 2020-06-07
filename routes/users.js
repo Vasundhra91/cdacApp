@@ -53,28 +53,42 @@ router.post('/', function (req, res) {
 router.post('/userinfo_byid', function (req, res) {
   var query = { User_id: req.body.Userid };
   UserTestResultModel.aggregate( [ 
+    { $match: { "Result": "PASS" } },
     {"$group" : {_id:"$User_id", 
     count:{$sum:1}}}
      ] )
     .exec(function (error, Count) {
     if (error) { throw error }
-    if (Count.length >= 1) {
+ console.log(Count)
+    if (Count.length >= 10) {
+     
       UserTestResultModel.findOne(query, function (error, data) {
         if (error) { throw error }
-        
+        console.log(data )
         if(data!== null){
         if (data.Result === "PASS") {
+          console.log(req.body.UserCourseID )
           UserCourse.findOne({ _id: req.body.UserCourseID }, function (error, datavalue) {
             if (error) { throw error }
+            if(datavalue!== null){
             res.json(datavalue);
+          }else {
+            res.json({ Usercourse: "null" });
+          }
           })
+        }
+        else {
+          res.json({ Usercourse: "null" });
         }
       }
       else {
         res.json({ Usercourse: "null" });
+        //res.json({ status: "null" });
       }
+     
       })
-    } else {
+    } 
+    else {
       res.json({ Usercourse: "null" });
       //res.json({ status: "null" });
     }
