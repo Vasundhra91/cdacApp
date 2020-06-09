@@ -140,7 +140,7 @@ class AddQuestion extends React.Component {
                         </div>
                         <Grid container style={{ paddingTop: "15px", paddingRight: "15px" }}>
                             <Grid item style={{ paddingRight: "15px" }}>
-                                <TextField id="MCQ_ques" label="Question" multiline rows={4} placeholder="Ques" variant="outlined" 
+                                <TextField id="MCQ_ques" autoFocus label="Question" multiline rows={4} placeholder="Ques" variant="outlined" 
                                 onChange={e => this.setState({"MCQ_ques": e.target.value})} />
                             </Grid>
 

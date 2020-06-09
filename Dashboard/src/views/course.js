@@ -78,6 +78,7 @@ export default function AddCourse() {
                <div style={{color:"red" }}>{check==""?"Dont Write dublicate Course ":check!=""?"Data Saved successfully":""} </div> 
                 <form onSubmit={handleSubmit} className={classes.form} noValidate>
                     <TextField
+                        autoFocus
                         variant="outlined"
                         margin="normal"
                         required
