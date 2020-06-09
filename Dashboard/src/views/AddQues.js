@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Select from "react-select";
 class AddQuestion extends React.Component {
     state = {
+        error:"",
+        msg:"",
         MCQ_option: [],
         MCQ_ques: [],
         MCQ_Answer: [],
@@ -55,11 +57,12 @@ class AddQuestion extends React.Component {
         this.setState({ selectedlabel: selectedOption.label });
         this.setState({ loading: true })
     };
-    handleEvent = (e) => {
-        this.setState({
-            [e.target.id]: e.target.value
-        })
-    }
+    // handleEvent = (e) => {
+    //     this.setState({
+    //         [e.target.id]: e.target.value
+    //     })
+       
+    // }
     handleSumbmitEvent = (e) => {
         e.preventDefault();
         //  var data1 = "";
@@ -67,14 +70,27 @@ class AddQuestion extends React.Component {
             var optionid = this.state.MCQ_option.split(',');
             //var MCQ_queslist = ''
             let jsonObj = []
-
+            let err="";
             for (var i = 0; i < optionid.length; i++) {
                 // MCQ_queslist = MCQ_queslist + ',' + '"' + optionid[i] + '"'
+               if(optionid[i]==="")
+               {
+                err=1;
+                this.setState({error:"1"})
+                this.setState({msg:"Write Option with comma separated."})
+               }
+               else{
                 jsonObj.push(optionid[i])
             }
+            }
+          if(!jsonObj.includes(this.state.MCQ_Answer)){
+            this.setState({error:"1"})
+            this.setState({msg:"Answer is matched with given option."})
+             }
+            if (err==="" && jsonObj.includes(this.state.MCQ_Answer))
+            {
             var tempDate = new Date();
             var date = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate() + ' ' + tempDate.getHours() + ':' + tempDate.getMinutes() + ':' + tempDate.getSeconds();
-
             //data1 = '{"Ques_id":' + '"'+this.state.Ques_id+'"'+ ',"MCQ_Answer":' + '"'+this.state.MCQ_Answer+'"'+ ',"MCQ_ques":' + '"'+this.state.MCQ_ques+'"'+ ',"User_id":' +0+ ',"Result":' + '"'+"null"+'"'+ ',"MCQ_option":{"option":[ '+ MCQ_queslist.substr(1) + ']}}';
             var newdata = {
                 Ques_id: this.state.Ques_id,
@@ -86,14 +102,16 @@ class AddQuestion extends React.Component {
                 UserCourseID: this.state.selectedOption,
                 Inserted_date: date
 
-            }
-            console.log(newdata)
+            }  
+
+            this.setState({error:""})
             this.props.AddDetails(newdata)
+        }
             e.target.reset();
             this.setState({
-                MCQ_option: "",
-                MCQ_ques: "",
-                MCQ_Answer: ""
+                MCQ_option: [],
+                MCQ_ques: [],
+                MCQ_Answer: []
                 // loading: false
             })
         }
@@ -107,27 +125,31 @@ class AddQuestion extends React.Component {
                     <Typography component="h1" variant="h5" style={{ paddingTop: "15px" }}>
                         Add Test Paper
               </Typography>
+              {this.state.error!==""?<div className="alert alert-warning" role="alert">{this.state.msg}</div>
+                  :""} 
                     <form onSubmit={this.handleSumbmitEvent} style={{ paddingTop: "25px" }}>
 
                         <div className="row">
                             <div className="col-lg-2 col-xl-2 col-md-4 col-sm-4">
                                 Course:
-</div><div className="col-lg-2 col-xl-2 col-md-4 col-sm-4">
+</div>
+<div className="col-lg-2 col-xl-2 col-md-4 col-sm-4">
                                 <Select value={selectedOption} isDisabled={this.state.loading} classname="form-control input-sm" options={this.state.data} onChange={this.handleChange} placeholder="Course Selection" />
 
                             </div>
                         </div>
                         <Grid container style={{ paddingTop: "15px", paddingRight: "15px" }}>
                             <Grid item style={{ paddingRight: "15px" }}>
-                                <TextField id="MCQ_ques" label="Question" multiline rows={4} placeholder="Ques" variant="outlined" onChange={this.handleEvent} />
+                                <TextField id="MCQ_ques" label="Question" multiline rows={4} placeholder="Ques" variant="outlined" 
+                                onChange={e => this.setState({"MCQ_ques": e.target.value})} />
                             </Grid>
 
                             <Grid item style={{ paddingRight: "15px" }}>
-                                <TextField id="MCQ_option" onChange={this.handleEvent} label="Option" multiline rows={4} placeholder="Write Option with comma separated" variant="outlined" />
+                                <TextField id="MCQ_option" onChange={e => this.setState({"MCQ_option": e.target.value})} label="Option" multiline rows={4} placeholder="Write Option with comma separated" variant="outlined" />
                             </Grid>
 
                             <Grid item style={{ paddingRight: "15px" }}>
-                                <TextField id="MCQ_Answer" onChange={this.handleEvent} label="Answer" multiline rows={4} placeholder="Answer." variant="outlined"  />
+                                <TextField id="MCQ_Answer"  onChange={e => this.setState({"MCQ_Answer": e.target.value})} label="Answer" multiline rows={4} placeholder="Answer." variant="outlined"  />
                             </Grid>
 
                             <Grid item>
