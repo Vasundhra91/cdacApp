@@ -85,7 +85,7 @@ class AddQuestion extends React.Component {
             }
           if(!jsonObj.includes(this.state.MCQ_Answer)){
             this.setState({error:"1"})
-            this.setState({msg:"Answer is matched with given option."})
+            this.setState({msg:"Answer isn't matched with given option."})
              }
             if (err==="" && jsonObj.includes(this.state.MCQ_Answer))
             {
