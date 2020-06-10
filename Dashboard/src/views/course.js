@@ -1,12 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
+import {courseContext} from 'views/Logincontext'
 import Grid from '@material-ui/core/Grid';
 export default function AddCourse() {
     const [data, setData] = useState([]);
+    const [newdata, setnewData] = useState(0);
     const [check, setcheck] = useState([]);
     const useStyles = makeStyles(theme => ({
         paper: {
@@ -27,17 +29,18 @@ export default function AddCourse() {
             margin: theme.spacing(3, 0, 2),
         },
     }));
+    const {dispatchcourse,course} = useContext(courseContext)
     const classes = useStyles();
-    const [course, setcourse] = useState("");
+    const [selectedcourse, setcourse] = useState("");
     function validateForm() {
-        return course.length > 0;
+        return selectedcourse.length > 0;
     }
     function handleSubmit(event) {
         event.preventDefault();
         var tempDate = new Date();
         var date = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate() + ' ' + tempDate.getHours() + ':' + tempDate.getMinutes() + ':' + tempDate.getSeconds();
         const newUser = {
-            Usercourse: course,
+            Usercourse: selectedcourse,
             Inserted_date: date
         }
         fetch('/users/addcourse', {
@@ -53,13 +56,25 @@ export default function AddCourse() {
         .catch(error => console.error('Error:', error));
     }
     useEffect(() => {
+        if(newdata==0)
+        { dispatchcourse({type:'logout',course:""})}
         axios
             .get("/users/coursedetails")
             .then(result => setData(result.data))
     }, []);
 
+    useEffect(() => {
+        var coursedata= data.map((data) => { return { value: data._id, label: data.Usercourse } })
+        setnewData(coursedata)
+        if(newdata!=0 ||data.length>0)
+        {
+        dispatchcourse({type:'logout',course:""})
+        dispatchcourse({type:'login',course:coursedata})}
+        }, [data]);
+
     function  handleDeleteEvent(e) {
         e.preventDefault();
+        
         fetch('/users/deletecourse/' + e.target.id, {
             method: 'delete',
             headers: {
@@ -83,10 +98,10 @@ export default function AddCourse() {
                         margin="normal"
                         required
                         fullWidth
-                        name="course"
+                        name="selectedcourse"
                         label="Course Name"
-                        type="course"
-                        id="course"
+                        type="selectedcourse"
+                        id="selectedcourse"
                         onChange={e => setcourse(e.target.value)}
                     />
                     <Button

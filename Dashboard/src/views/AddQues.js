@@ -8,6 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import axios from "axios";
 import TextField from '@material-ui/core/TextField';
 import Select from "react-select";
+import {courseContext} from 'views/Logincontext'
 class AddQuestion extends React.Component {
     state = {
         error:"",
@@ -45,11 +46,10 @@ class AddQuestion extends React.Component {
     validateForm() {
         return this.state.selectedOption.length > 0 && this.state.MCQ_ques.length > 0 && this.state.MCQ_Answer.length > 0 && this.state.MCQ_option.length > 0;
     }
+    static contextType = courseContext;
     componentDidMount() {
-        axios
-            .get("/users/coursedetails")
-            .then(result => this.setState({ data: result.data.map((data) => { return { value: data._id, label: data.Usercourse } }) }))
-
+        const {course} = this.context
+        this.setState({ data:course[0]})
         this.setState({ loading: false })
     }
     handleChange = selectedOption => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect }  from 'react';
+import React, { useState, useEffect ,useContext}  from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -13,6 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from "axios";
+import {courseContext} from 'views/Logincontext'
 import homeimg from '../image/elearning.jpg'
 import Select from "react-select";
 function Copyright() {
@@ -55,16 +56,17 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [firstName, setfirstName] = useState("");
   const [lastName, setlastName] = useState("");
-  const [course, setcourse] = useState("");
+  const [selectedcourse, setcourse] = useState("");
   const [Admin, setAdmin] = useState("N");
   const [returndata, setreturndata] = useState(0);
   const [selectedOption, setselectedOption] = useState(false);
   const [data, setData] = useState({label: "Loading ...", value: ""});
-  const [loading, setLoading] = React.useState(true);
+  const [loading, setLoading] = useState(true);
   const [status, setstatus] = useState("");
   const [msg , setmsg]=useState("");
   const [ profileImg, setprofileImg]=useState([]);
   const [ profileImg_data, setprofileImg_data]=useState([]);
+  const {course} = useContext(courseContext)
 
 //-----file upload-----//
 function onFileChange(e) {
@@ -102,7 +104,7 @@ useEffect(() => {
 },[profileImg_data])
 
 function validateFormupload() {
-  return email.length > 0 && password.length > 0 && course.length > 0 && firstName.length > 0 && lastName.length > 0;
+  return email.length > 0 && password.length > 0 && selectedcourse.length > 0 && firstName.length > 0 && lastName.length > 0;
 }
 
 ///--------------------///
@@ -113,7 +115,7 @@ const validate = (email) => {
   return expression.test(String(email).toLowerCase())
 }
   function validateForm() {
-    return profileImg_data.length > 0 && email.length > 0 && password.length > 0 && course.length > 0 && firstName.length > 0 && lastName.length > 0;
+    return profileImg_data.length > 0 && email.length > 0 && password.length > 0 && selectedcourse.length > 0 && firstName.length > 0 && lastName.length > 0;
   }
   
   function handleChange(selectedOption) {
@@ -124,11 +126,9 @@ const validate = (email) => {
    };
    
   useEffect(() => {
-    setLoading(true);
-    axios
-        .get("/users/coursedetails")
-        .then(result => setData(result.data.map((data) => { return { value: data._id, label: data.Usercourse } })))
-        setLoading(false);
+    if(course[0]!=null){
+    setData(course[0])
+    setLoading(false)};
 }, []);
 
 function handlecheck(event) {
@@ -168,7 +168,7 @@ else{
       Useremail:email,
       Userpassword:password,
       UserAdmin: Admin,
-      UserCourseID: course,
+      UserCourseID: selectedcourse,
       UserPhotoID: profileImg_data,
       Inserted_date:date
     }

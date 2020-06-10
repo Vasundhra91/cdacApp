@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import axios from "axios";
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -12,8 +13,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-import { userContext } from 'views/Logincontext'
+import {BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import {userContext,courseContext} from 'views/Logincontext'
 import homeimg from '../image/elearning.jpg'
 import AdminLayout from 'layouts/Admin'
 import SignupPage from "views/signup";
@@ -59,7 +60,21 @@ export default function SignIn() {
   const [status, setstatus] = useState("");
   const [signup, setsignup] = useState(false);
   const {dispatch,user } = useContext(userContext)
+  const {dispatchcourse,course } = useContext(courseContext)
   const [msg , setmsg]=useState("");
+  const [data, setData] = useState(0);
+
+  useEffect(() => {
+    axios
+    .get("/users/coursedetails")
+    .then(result => setData(result.data.map((data) => { return { value: data._id, label: data.Usercourse } })))
+  }, []);
+
+  useEffect(() => {
+    if(data!=0 && course[0]==null)
+    {dispatchcourse({type:'login',course:data})}
+  }, [data]);
+
   useEffect(() => {
     if(Userdetails!="0")
     {
@@ -103,7 +118,6 @@ export default function SignIn() {
       //.then(setstatus("Invalid Login Id Or Password"))
       
   }
-  console.log(user.length)
   if (signup === true) {
     return (
       <Router>
