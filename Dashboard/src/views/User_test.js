@@ -7,7 +7,8 @@ export default class User_test extends Component {
         Result: " ",
         users_answer: [],
         selectedValue: [],
-        userinfoid: ""
+        userinfoid: "",
+        showmsg: ""
     }
     static contextType = userContext;
     componentDidMount() {
@@ -26,19 +27,18 @@ export default class User_test extends Component {
             }
         }).then(res => res.json())
             //.then(response => console.log('Success:', JSON.stringify(response)))
-            .then(users => this.setState({ users :users}))
+            .then(users => this.setState({ users: users }))
             .catch(error => console.error('Error:', error))
-            
     }
+
     handleSumbmitEvent = (e) => {
         e.preventDefault();
         var totalmarks = 0;
-            for (var i = 0; i < this.state.users.length; i++) {
-                if (this.state.users[i].AnsweredValue === this.state.users[i].MCQ_Answer) {
-                    totalmarks++;
-                }
+        for (var i = 0; i < this.state.users.length; i++) {
+            if (this.state.users[i].AnsweredValue === this.state.users[i].MCQ_Answer) {
+                totalmarks++;
             }
-
+        }
         var percent = totalmarks * 100 / this.state.users.length;
         var Result = ""
         if (Math.round(percent) >= 60) {
@@ -46,11 +46,13 @@ export default class User_test extends Component {
             this.setState({ Marks: totalmarks })
             this.setState({ Result: "PASS" })
             Result = "PASS"
+            this.setState({ showmsg: "Congratulations! you passed.. Marks: " + totalmarks })
         }
         else {
             this.setState({ Marks: totalmarks })
             this.setState({ Result: "FAIL" })
             Result = "FAIL"
+            this.setState({ showmsg: "You Failed.. Marks: " + totalmarks })
         }
         var tempDate = new Date();
         var date = tempDate.getFullYear() + '-' + (tempDate.getMonth() + 1) + '-' + tempDate.getDate() + ' ' + tempDate.getHours() + ':' + tempDate.getMinutes() + ':' + tempDate.getSeconds();
@@ -69,14 +71,14 @@ export default class User_test extends Component {
             }
         }).then(res => res.json())
             .then(returndata => this.setState({ setSubmit: returndata }))
+            .then(this.setState({selectedValue:""}))
             .catch(error => console.error('Error:', error));
     }
-
     render() {
-        
+        var count = 0;
         const handleChange = event => {
             function newusers(_id, AnsweredValue, statevalue) {
-            const findExistingItem = statevalue.find(item => {
+                const findExistingItem = statevalue.find(item => {
                     return item._id == _id;
                 });
                 if (findExistingItem) {
@@ -90,20 +92,20 @@ export default class User_test extends Component {
 
         };
         const MCQ_queslist = this.state.users.map(MCQ_ques => {
+            count++;
             return (
-                <div style={{fontSize:"15px"}} key={MCQ_ques._id}>
-                    <div> Question: {MCQ_ques.MCQ_ques} </div>
+                <div style={{ fontSize: "15px" }} key={MCQ_ques._id}>
+                    <div> Question {count + " : "} {MCQ_ques.MCQ_ques} </div>
                     <div> Option:  </div>
-                        {MCQ_ques.MCQ_option.map(function (MCQ_option, i) {
-                            return <div  key={i}>
-                                <input type="radio" name={MCQ_ques._id} id={i} onChange={handleChange} value={MCQ_option}/> {MCQ_option}
-                                    </div>
-                        })}
-                           
+                    {MCQ_ques.MCQ_option.map(function (MCQ_option, i) {
+                        return <div key={i}>
+                            <input type="radio" name={MCQ_ques._id} id={i} onChange={handleChange} value={MCQ_option} /> {MCQ_option}
+                        </div>
+                    })}
                 </div>
-            )})
+            )
+        })
         return (
-
             <form onSubmit={this.handleSumbmitEvent}>
                 <div style={{ paddingTop: "50px" }}>
                     <div className="container">
@@ -111,11 +113,12 @@ export default class User_test extends Component {
                             <h2>Test Paper</h2>
                             {MCQ_queslist}
                             <div style={{ color: 'Blue' }}>
-                                <h3> {this.state.Marks} {this.state.Result}</h3>
+                                <h3> {this.state.showmsg}</h3>
                             </div>
-                            <button className="btn btn-primary" type="submit">Submit </button>
+                            <button disabled={!this.state.selectedValue.length > 0} className="btn btn-primary" type="submit">Submit </button>
                         </div>
-                    </div></div>
+                    </div>
+                </div>
             </form>
         )
     }

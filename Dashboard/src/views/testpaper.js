@@ -82,6 +82,7 @@ export default class User_paper extends Component {
     }
     render() {
        console.log(this.state.testpaper)
+       var count = 0;
         return (
             <>{!this.state.done ? (
                 <div style={{ paddingTop: "100px", paddingLeft:"500px" }}>
@@ -113,6 +114,7 @@ export default class User_paper extends Component {
                                 <div className="row" style={{ background: "#cce6ff", width: "100%" }}>
                                     <div className="container">
                                         {this.state.testpaper.map(MCQ_ques => {
+                                             count++;
                                             return (
                                                 <div key={MCQ_ques.Ques_id}>
                                                     <div>
@@ -120,7 +122,7 @@ export default class User_paper extends Component {
                                                             <Col md="12">
                                                                 <Card>
                                                                     <CardHeader>
-                                                                        <CardTitle tag="h4">Question Paper for {MCQ_ques.UserCourseName}</CardTitle>
+                                                                        <CardTitle tag="h4">Question Paper {count +" : "} {MCQ_ques.UserCourseName}</CardTitle>
                                                                     </CardHeader>
                                                                     <CardBody>
                                                                         <Table >

@@ -173,15 +173,15 @@ router.post('/UserTestPaper', function (req, res) {
 
       var query = { User_id: req.body.Userid, Result: "PASS" }
 
-      UserTestResultModel.findOne(query, function (err, testdata) {
-       
+      UserTestResultModel.find(query, function (err, testdata) {
+       let newtestitem=[]
         if (testdata != null) {
+          for (i = 0; i < testdata.length; i++) {
           testResult = testResult.filter(x => {
-            return x.Ques_id != testdata.Ques_id;
-
+          return x.Ques_id != testdata[i].Ques_id;
           })
+        }
           res.json(testResult);
-
         } else {
           res.json(testResult);
         }
