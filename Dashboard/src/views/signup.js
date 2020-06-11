@@ -229,7 +229,7 @@ setprofileImg_data([])
 }
 else if (returndata.returndata ===2)
 {
-setstatus("SignUp Sucessfully")
+setstatus("SignUp Successfully")
 setmsg("alert alert-success")
 }
 }, [returndata])
