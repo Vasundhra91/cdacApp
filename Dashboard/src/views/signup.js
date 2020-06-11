@@ -64,14 +64,22 @@ export default function SignUp() {
   const [loading, setLoading] = useState(true);
   const [status, setstatus] = useState("");
   const [msg , setmsg]=useState("");
-  const [ profileImg, setprofileImg]=useState([]);
+  const [ profileImg, setprofileImg]=useState(null);
   const [ profileImg_data, setprofileImg_data]=useState([]);
   const {course} = useContext(courseContext)
 
 //-----file upload-----//
 function onFileChange(e) {
-  setprofileImg(e.target.files[0])
-  console.log(e.target.files[0]!==[])
+  if(e.target.files[0].type ==='image/jpeg'||e.target.files[0].type ==='image/bmp'||e.target.files[0].type ==='image/png')
+  {
+    setstatus("")
+  setmsg("")
+    setprofileImg(e.target.files[0])
+  }else{
+    setprofileImg(null)
+    setstatus("Picture format is not correct")
+    setmsg("alert alert-warning")  
+  }
 }
 
 function onSubmit(e) {
@@ -104,7 +112,7 @@ useEffect(() => {
 },[profileImg_data])
 
 function validateFormupload() {
-  return email.length > 0 && password.length > 0 && selectedcourse.length > 0 && firstName.length > 0 && lastName.length > 0;
+  return profileImg!==null && email.length > 0 && password.length > 0 && selectedcourse.length > 0 && firstName.length > 0 && lastName.length > 0;
 }
 
 ///--------------------///
@@ -317,7 +325,7 @@ setmsg("alert alert-success")
             onClick={onSubmit}
             disabled={!validateFormupload()}
           >
-            Upload
+            Upload Photo
           </Button>
             </Grid>
           </Grid>
