@@ -24,6 +24,7 @@ class AdmitCard extends React.Component {
       UserCourseID: lat.UserCourseID
     }
     const Userinfo = {
+      ID: "Roll No.: "+lat._id,
       name: "Name: "+lat.Fname+" "+lat.LName,
       Email: "Email: "+ lat.Useremail,
       UserPhotoID:lat.UserPhotoID
@@ -41,7 +42,7 @@ class AdmitCard extends React.Component {
         .then(this.setState({ usersinfo: Userinfo }))
         .then(this.setState({ done: true }))
         .catch(error => console.error('Error:', error))
-    }, 2000);
+    }, 4000);
 
   }
   render() {
@@ -61,11 +62,12 @@ class AdmitCard extends React.Component {
          <>
          <PdfContainer createPdf={this.createPdf}>
             <div><h2> Admit Card </h2></div>
-            <div key={this.state.usersinfo._id}  className="row border border-primary">
+            <div className="row">
                 <div className="col-xl-3 col-xl-3 col-md-3 col-sm-3 col-xs-3">
                   <img style={{ width: "100px", height: "100px" }} src={"/uploaduserphoto/image/" + this.state.usersinfo.UserPhotoID} alt="Placeholder image" />
                 </div>
                 <div className="col-xl-5 col-xl-5 col-md-5 col-sm-5 col-xs-5">
+                <div> <h6>  {this.state.usersinfo.ID}</h6> </div>
                   <div> <h6>  {this.state.usersinfo.name}</h6> </div>
                   <div> <h6>  { this.state.usersinfo.Email} </h6> </div>
                   <div> <h6> { "Course: "+ this.state.UserCourse.Usercourse } </h6>  </div>
