@@ -27,23 +27,26 @@ export default class View_testPaper extends Component {
 
     }
     render() {
+         var count = 0;
+         console.log(count)
         const MCQ_queslist = this.state.MCQ_quesdetails.map(MCQ_ques => {
+            count++;
             return (
                 <div key={MCQ_ques._id}>
                     <Grid container>
                         <Grid item xs={3}>
-                            <h4> Question:</h4><div> {MCQ_ques.MCQ_ques} </div></Grid>
+                            <h4> Question  </h4><div>{"("+count + ") "} {MCQ_ques.MCQ_ques} </div></Grid>
                         <Grid item xs={3}>
-                            <Grid item xs={5}><h4> Option:  </h4></Grid>
+                            <Grid item xs={5}><h4> Option  </h4></Grid>
                             {MCQ_ques.MCQ_option.map(function (MCQ_option, i) {
                                 return <div key={i}>
                                     <Grid item xs={7}>
-                                        <span>{MCQ_option}</span>
+                                        <span>{"("+ (i+1) +")  "}{MCQ_option}</span>
                                     </Grid>
                                 </div>
                             })}</Grid>
                         <Grid item xs={3}>
-                            <h4> Answer:
+                            <h4> Answer
                                 </h4><div> {MCQ_ques.MCQ_Answer} </div>
                         </Grid>
                     </Grid>
