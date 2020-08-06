@@ -28,7 +28,6 @@ export default class View_testPaper extends Component {
     }
     render() {
          var count = 0;
-         console.log(count)
         const MCQ_queslist = this.state.MCQ_quesdetails.map(MCQ_ques => {
             count++;
             return (

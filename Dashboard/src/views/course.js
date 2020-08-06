@@ -29,7 +29,7 @@ export default function AddCourse() {
             margin: theme.spacing(3, 0, 2),
         },
     }));
-    const {dispatchcourse,course} = useContext(courseContext)
+    const {dispatchcourse} = useContext(courseContext)
     const classes = useStyles();
     const [selectedcourse, setcourse] = useState("");
     function validateForm() {
@@ -57,7 +57,8 @@ export default function AddCourse() {
     }
     useEffect(() => {
         if(newdata==0)
-        { dispatchcourse({type:'logout',course:""})}
+        { 
+            dispatchcourse({type:'logout',course:""})}
         axios
             .get("/users/coursedetails")
             .then(result => setData(result.data))
