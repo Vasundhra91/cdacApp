@@ -1,15 +1,26 @@
 const LoginModel = require('../models/login_model')
+
+
 const loginCheck=(req,res )=>{
-    var query = { Useremail: req.body.Useremail };
-    LoginModel.findOne(query, function (error, datavalue) {
-      if (datavalue !== null) {
-        console.log(res.send("3"))
-        res.send("3");
-      }else{
-        res.send("0");
-      }
-      if (error) { throw error }
+  let check = new Promise((resolve,reject)=>
+{
+  var query = { Useremail: req.body.Useremail };
+  LoginModel.findOne(query, function (error, datavalue) {
+    if (datavalue !== null) {
+      resolve("3")
+      //console.log(res.send("3"))
+    }else{
+      reject("0")
+    }
+    check.then((value)=>{
+      res.send(value);
+    }).catch((value)=>{
+      res.send(value);
     })
+  })
+}
+)
+   
 }
 const signup= function (req, res) {
     var query = { Useremail: req.body.Useremail };
