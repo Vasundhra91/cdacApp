@@ -105,8 +105,6 @@ class AddQuestion extends React.Component {
             }  
 
             this.setState({error:""})
-            this.props.AddDetails(newdata)
-        }
             e.target.reset();
             this.setState({
                 MCQ_option: [],
@@ -114,6 +112,10 @@ class AddQuestion extends React.Component {
                 MCQ_Answer: []
                 // loading: false
             })
+            this.props.AddDetails(newdata)
+           
+        }
+            
         }
     }
     render() {
