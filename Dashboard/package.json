@@ -24,7 +24,7 @@
     "reactstrap": "8.0.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "set PORT=3005 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
@@ -33,7 +33,7 @@
     "minify-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.min.css --output-style compressed",
     "map-sass": "node-sass src/assets/scss/paper-dashboard.scss src/assets/css/paper-dashboard.css --source-map true"
   },
-  "proxy": "http://localhost:3001",
+  "proxy": "http://localhost:6001",
   "eslintConfig": {
     "extends": "react-app"
   },
