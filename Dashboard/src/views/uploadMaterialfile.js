@@ -65,7 +65,7 @@ class uploadfile extends Component {
   onSubmitfile(e) {
     e.preventDefault()
     this.setState({ dataname: e.target.value })
-    window.open("http://localhost:3001/uploadfile/files/" + "" + e.target.value + "")
+    window.open("http://localhost:6001/uploadfile/files/" + "" + e.target.value + "")
     // console.log(e.target.value)
     //  fetch('/uploadfile/files/'+ e.target.value)
     //  .then(res => res.json())
